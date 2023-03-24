@@ -51,19 +51,29 @@ func singleValue(valueName string, wordlist []string) {
 		check(err)
 		body := string(b)
 
-		//request
-		fmt.Printf("%d \t", request)
-		//payload
-		fmt.Printf("%s \t", a)
-		//status
-		fmt.Printf("%s \t", r.Status)
-		//length
-		a := len(body)
-		fmt.Printf("%d \t", a)
-		//Time
-		fmt.Printf("%f \n", ava)
-
+		saveMap(request, a, r.Status, len(body), ava)
+		/*
+			//request
+			fmt.Printf("%d \t", request)
+			//payload
+			fmt.Printf("%s \t", a)
+			//status
+			fmt.Printf("%s \t", r.Status)
+			//length
+			a := len(body)
+			fmt.Printf("%d \t", a)
+			//Time
+			fmt.Printf("%f \n", ava)
+		*/
 	}
+}
+
+func saveMap(request int, payload string, status string, length int, time float64) {
+	structMap := make(map[int]interface{})
+	out := RequestData{request, payload, status, length, time}
+	structMap[request] = out
+
+	fmt.Println(structMap)
 }
 
 func main() {
