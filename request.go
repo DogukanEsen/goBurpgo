@@ -18,16 +18,23 @@ type RequestData struct {
 	RequestTime    float64
 }
 
-func check(e error) {
+var structMap = make(map[int]interface{})
+
+func check(e error) bool {
+	err := false
 	if e != nil {
 		fmt.Println(e)
+		err = true
 	}
+	return err
 }
 
 func kelimeOku(filename string) []string {
 	var words []string
 	file, err := os.Open(filename)
-	check(err)
+	if check(err) {
+		return nil
+	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
@@ -39,41 +46,36 @@ func kelimeOku(filename string) []string {
 }
 
 func singleValue(valueName string, wordlist []string) {
-
 	fmt.Println("--- Requests -|---------- Payload ----------|- Status -|- Length -|- Time ---")
-	for request, a := range wordlist {
+	for request, payload := range wordlist {
 		Start := time.Now()
-		r, err := http.PostForm("https://echoof.me", url.Values{valueName: {a}})
+		r, err := http.PostForm("https://echoof.me", url.Values{valueName: {payload}})
 		check(err)
-		ava := time.Since(Start).Seconds()
+		totalTime := time.Since(Start).Seconds()
 		defer r.Body.Close()
 		b, err := io.ReadAll(r.Body)
 		check(err)
 		body := string(b)
 
-		saveMap(request, a, r.Status, len(body), ava)
-		/*
-			//request
-			fmt.Printf("%d \t", request)
-			//payload
-			fmt.Printf("%s \t", a)
-			//status
-			fmt.Printf("%s \t", r.Status)
-			//length
-			a := len(body)
-			fmt.Printf("%d \t", a)
-			//Time
-			fmt.Printf("%f \n", ava)
-		*/
+		saveMap(request, payload, r.Status, len(body), totalTime)
+
+		//request
+		fmt.Printf("%d \t", request)
+		//payload
+		fmt.Printf("%s \t", payload)
+		//status
+		fmt.Printf("%s \t", r.Status)
+		//length
+		fmt.Printf("%d \t", len(body))
+		//Time
+		fmt.Printf("%f \n", totalTime)
+
 	}
 }
 
 func saveMap(request int, payload string, status string, length int, time float64) {
-	structMap := make(map[int]interface{})
 	out := RequestData{request, payload, status, length, time}
 	structMap[request] = out
-
-	fmt.Println(structMap)
 }
 
 func main() {
@@ -84,6 +86,15 @@ func main() {
 	fmt.Printf("Welcome to app. Please enter your wordlist name: ")
 	fmt.Scan(&wordlistName)
 	wordlist = kelimeOku(wordlistName)
+	for {
+		if wordlist == nil {
+			fmt.Printf("Wrong wordlist name. Please enter your wordlist again: ")
+			fmt.Scan(&wordlistName)
+			wordlist = kelimeOku(wordlistName)
+		} else {
+			break
+		}
+	}
 	fmt.Printf("%s is reading....\n", wordlistName)
 	fmt.Printf("Please enter your value name: ")
 	fmt.Scan(&valueName)
