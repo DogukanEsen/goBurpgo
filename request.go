@@ -36,15 +36,31 @@ func kelimeOku(filename string) []string {
 }
 
 func main() {
-	var wordlistName string
+	var wordlistName, valueName, website string
 	var choice int
-	var valueName string
-	var website string
 	var wordlist []string
-
-	fmt.Printf("Welcome to app.\n 0 - Numbers\n 1 - Simplelist")
+	fmt.Printf("Welcome to app.\n 0 - Numbers\n 1 - Simplelist\nPlease enter a number: ")
 	fmt.Scan(&choice)
 	if choice == 0 {
+		var choice2 int
+		fmt.Printf("Welcome to app.\n 0 - Numbers\n 1 - Number2\nPlease enter a number: ")
+		fmt.Scan(&choice2)
+		if choice2 == 0 {
+			var from, to, step int
+			fmt.Printf("Please enter the value from: ")
+			fmt.Scan(&from)
+			fmt.Printf("Please enter the value to: ")
+			fmt.Scan(&to)
+			fmt.Printf("Please enter the value step: ")
+			fmt.Scan(&step)
+			wordlist = numbers(from, to, step)
+		}
+		if choice2 == 1 {
+			var digit int
+			fmt.Printf("Please enter the value digit: ")
+			fmt.Scan(&digit)
+			wordlist = numbers2(digit)
+		}
 
 	}
 	if choice == 1 {
@@ -66,11 +82,10 @@ func main() {
 	fmt.Printf("Please enter your web link(https://echoof.me as 0): ")
 	fmt.Scan(&website)
 	if website == "0" {
-		website = "https://echoof.me"
+		// website = "" Unfortunately echoof.me is closed
 	}
 	fmt.Printf("Please enter your value name: ")
 	fmt.Scan(&valueName)
-
 	singleValue(valueName, wordlist, website)
 
 }

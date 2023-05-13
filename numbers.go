@@ -5,39 +5,28 @@ import (
 	"strconv"
 )
 
-func check(e error) bool {
-	err := false
-	if e != nil {
-		fmt.Println(e)
-		err = true
-	}
-	return err
-}
-
-func numbers(from int, to int, step int) []int {
+func numbers(from int, to int, step int) []string {
 	//Return ederken pointer ediyor düzelt
-	var tempNumberlist []int
+	var tempNumberlist []string
 	for i := from; i < to; i = i + step {
-		tempNumberlist = append(tempNumberlist, i)
+		tempNumberlist = append(tempNumberlist, strconv.Itoa(i))
 	}
 	return tempNumberlist
 }
 
-func numbers2(basamak int, from int, to int, step int) {
-	var tempNumberlist []int
+func numbers2(digit int) []string {
+	var tempNumberlist []string
 
-	switch basamak {
+	switch digit {
 	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
 		for i := 0; i < 10; i++ {
-			if basamak > 1 {
-				temp := fmt.Sprintf("%0*d", basamak-1, i)
-				temp2, err := strconv.Atoi(temp)
-				check(err)
-				tempNumberlist = append(tempNumberlist, temp2)
+			if digit > 1 {
+				temp := fmt.Sprintf("%0*d", digit-1, i)
+				tempNumberlist = append(tempNumberlist, temp)
 			} else {
-				tempNumberlist = append(tempNumberlist, i)
+				tempNumberlist = append(tempNumberlist, strconv.Itoa(i))
 			}
 		}
 	}
-	fmt.Print(tempNumberlist)
+	return tempNumberlist
 }

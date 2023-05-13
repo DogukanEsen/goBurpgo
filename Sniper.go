@@ -18,15 +18,6 @@ type RequestData struct {
 
 var structMap = make(map[int]interface{})
 
-func check(e error) bool {
-	err := false
-	if e != nil {
-		fmt.Println(e)
-		err = true
-	}
-	return err
-}
-
 func singleValue(valueName string, wordlist []string, website string) {
 	fmt.Println("--- Requests -|---------- Payload ----------|- Status -|- Length -|- Time ---")
 	for request, payload := range wordlist {
