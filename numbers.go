@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -15,18 +15,19 @@ func numbers(from int, to int, step int) []string {
 }
 
 func numbers2(digit int) []string {
-	var tempNumberlist []string
+	result := make([]string, 0, int(math.Pow(float64(10), float64(digit))))
 
-	switch digit {
-	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
-		for i := 0; i < 10; i++ {
-			if digit > 1 {
-				temp := fmt.Sprintf("%0*d", digit-1, i)
-				tempNumberlist = append(tempNumberlist, temp)
-			} else {
-				tempNumberlist = append(tempNumberlist, strconv.Itoa(i))
-			}
-		}
+	numbers2_Recursive("", 10, digit, &result)
+	return result
+}
+
+func numbers2_Recursive(prefix string, base int, digit int, result *[]string) {
+	if digit == 0 {
+		*result = append(*result, prefix)
+		return
 	}
-	return tempNumberlist
+
+	for i := 0; i < base; i++ {
+		numbers2_Recursive(prefix+strconv.Itoa(i), base, digit-1, result)
+	}
 }

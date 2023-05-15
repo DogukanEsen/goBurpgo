@@ -39,7 +39,7 @@ func singleValue(valueName string, wordlist []string, website string) {
 		//status
 		fmt.Printf("%s \t", r.Status)
 		//length
-		fmt.Printf("%d \t", len(body))
+		fmt.Printf("%d \t", len(payload))
 		//Time
 		fmt.Printf("%f \n", totalTime)
 
